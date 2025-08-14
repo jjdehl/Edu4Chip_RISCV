@@ -21,6 +21,7 @@ https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/FROM_BLINK
 - [11:7] is the result register
 - [19:15] is rs1
 - [24:20] is rs2
+  
 Bits 31:7 are constructed based on the opcode.
 
 Only the bits outlined above are passed on to the register file.
