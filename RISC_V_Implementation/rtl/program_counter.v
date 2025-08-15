@@ -19,9 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-parameter PROGRAM_COUNTER_WIDTH = 16;
+
 
 module program_counter(
+    parameter PROGRAM_COUNTER_WIDTH = 16
+    )(
     input clk,
     input rst,
     input run,
