@@ -19,23 +19,21 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+parameter PROGRAM_COUNTER_WIDTH = 16;
 
 module program_counter(
-    parameter PROGRAM_COUNTER_WIDTH = 16
-    )(
-    input clk,
-    input rst,
-    input run,
-    input jump,
-    input [PROGRAM_COUNTER_WIDTH-1:0] jump_address,
+    input logic clk,
+    input logic rst,
+    input logic run,
+    input logic jump,
+    input logic [PROGRAM_COUNTER_WIDTH-1:0] jump_address,
 
-    output reg [PROGRAM_COUNTER_WIDTH-1:0] pc
+    output logic [PROGRAM_COUNTER_WIDTH-1:0] pc
     );
 
-    wire [PROGRAM_COUNTER_WIDTH-1:0] next_pc = run ? (jump ? jump_address : pc + 1) : pc;
+    logic [PROGRAM_COUNTER_WIDTH-1:0] next_pc = run ? (jump ? jump_address : pc + 1) : pc;
 
-    always @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
             pc <= {PROGRAM_COUNTER_WIDTH{1'b0}};
         end else begin
