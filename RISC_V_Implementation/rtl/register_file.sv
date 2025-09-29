@@ -39,15 +39,28 @@ module register_file(
 
     logic [RF_MEM_WIDTH-1:0] data_reg[RF_MEM_DEPTH];
 
-    assign rdata1 = data_reg[raddr1];
-    assign rdata2 = data_reg[raddr2];
+    // assign rdata1 = data_reg[raddr1];
+    // assign rdata2 = data_reg[raddr2];
+
+    // Read logic
+    always_ff @(posedge clk) begin
+        if (rst) begin
+            rdata1 <= {RF_MEM_WIDTH{1'b0}};
+            rdata2 <= {RF_MEM_WIDTH{1'b0}};
+            end
+            else begin
+            rdata1 <= data_reg[raddr1];
+            rdata2 <= data_reg[raddr2];
+        end
+    end
 
 
+    // Write logic
     always_ff @(posedge clk) begin
          if (rst) begin
-            //for (i = 0; i < RF_MEM_DEPTH; i + 1) begin
-            //     data_reg[i] <= {RF_MEM_WIDTH{1'b0}};
-            // end
+            for (i = 0; i < RF_MEM_DEPTH; i = i+ 1) begin
+               data_reg[i] <= {RF_MEM_WIDTH{1'b0}};
+            end
         end
         else if (we) begin
             if (waddr) begin // Makes sure that address 0 is always 0

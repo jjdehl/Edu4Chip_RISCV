@@ -24,21 +24,32 @@ module riscv_top_tb(
   );
   logic clk;
   logic reset;
-  logic run;
   logic [31:0] instr;
   logic [31:0] read1;
   logic [31:0] read2;
   logic [31:0] counter;
+  logic [31:0] alu_result;
+  logic mem_enable;
+  logic [4:0] write_address;
+  logic [4:0] read1_address;
+  logic [31:0] jump_debug;
+  logic je_debug;
 
   riscv_top dut (
       .clk(clk),
       .rst(reset),
-      .run(run),
 
       .prog_cnt_wire(counter),
       .out_instr(instr),
-      .read1(read1),
-      .read2(read2)
+      .read1_out(read1),
+      .read2_out(read2),
+      .cur_result(alu_result),
+      .mem_enable_alu_out(mem_enable),
+      .write_address(write_address),
+      .read1_address(read1_address),
+      .jump_debug(jump_debug),
+      .je_debug(je_debug)
+
   );
   // clock
     initial begin
@@ -48,9 +59,7 @@ module riscv_top_tb(
 
    initial begin
       reset = 1'b1;
-      run = 1'b0;
       #5 reset = 1'b0;
-      #5 run = 1'b1;
       
    end
 
