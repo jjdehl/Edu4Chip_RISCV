@@ -42,7 +42,7 @@ module alu_r32 #(
     output logic                    w_mem,
     output logic [INSTR_LENGTH-1:0] result, 
 
-    output logic                    err
+    output logic [1:0]              err // 0 invalid instruction 1 non implemented function code used
     );
 
     logic [6:0] opcode;
@@ -56,14 +56,14 @@ module alu_r32 #(
         pc_jump = 1'b0;
         not_relative_pc = 1'b0;
         jump_offset = {INSTR_LENGTH{1'b0}};
-        err = 1'b0;
+        err = 2'b00;
 
         case (opcode)
         7'b0110011 : begin
             w_mem = 1'b1;
             case (alu_op[14:12])
                 3'b000: begin
-                    case (alu_op[31:25]) // Can be optimized a lot...
+                    case (alu_op[31:25]) 
                         7'b0000000: result = data1 + data2; // ADD
                         7'b0100000: result = data1 - data2; // SUB
                         default: result = {INSTR_LENGTH{1'b0}}; 
@@ -102,7 +102,7 @@ module alu_r32 #(
                     result = data1 & data2;
                 end
 
-                default: err = 1'b1 ; // Invalid instruction
+                default: err[0] = 1'b1 ; // Invalid instruction
 
             endcase
         end
@@ -140,7 +140,7 @@ module alu_r32 #(
                 3'b111: begin // ANDI
                     result = data1 & inplace;
                 end
-                3'b001: begin // SLLI - does not verify that 31:25 are 0000000
+                3'b001: begin // SLLI - does not verify that 31:25 are 0000000, just ignores them
                     result = data1 << inplace[4:0];
                 end
                 3'b101: begin 
@@ -150,13 +150,13 @@ module alu_r32 #(
                         default: result = {INSTR_LENGTH{1'b0}}; // invalid instruction
                     endcase
                 end
-                default: err = 1'b1 ; // Invalid instruction
+                default: err[0] = 1'b1 ; // Invalid instruction
              endcase
         end
 
 
         7'b1100011: begin // Branch instructions
-            jump_offset = { {20{alu_op[31]}}, alu_op[7], alu_op[30:25], alu_op[11:8], 1'b0 } - 4*PIPELINE_STAGES;
+            jump_offset = { {20{alu_op[31]}}, alu_op[7], alu_op[30:25], alu_op[11:8], 1'b0} - 4; // - 4*PIPELINE_STAGES // not needed due to stall logic
             case (alu_op[14:12])
                 3'b000: begin // BEQ
                     pc_jump = (data1 == data2) ? 1'b1 : 1'b0;
@@ -177,14 +177,14 @@ module alu_r32 #(
                     pc_jump = ($unsigned(data1) > $unsigned(data2)) ? 1'b1 : 1'b0;
                     
                 end
-                default: err = 1'b1; // Invalid instruction
+                default: err[0] = 1'b1; // Invalid instruction
             endcase
         end
         7'b1101111: begin // JAL
             pc_jump = 1'b1;
             w_mem = 1'b1;
             result = pc + 4; // Store return address in rd. +4 will depend on pipelining
-            jump_offset = { {12{alu_op[31]}}, alu_op[19:12], alu_op[20], alu_op[30:21], 1'b0 } - 4*PIPELINE_STAGES; // to account for pipelining
+            jump_offset = { {12{alu_op[31]}}, alu_op[19:12], alu_op[20], alu_op[30:21], 1'b0 } - 4; // *PIPELINE_STAGES to account for pipelining
         end
 
         7'b1100111: begin // JALR
@@ -196,10 +196,16 @@ module alu_r32 #(
             jump_offset = (data1 + inplace) & ~1; // LSB is always zero
         end
 
-        default: ; // Should make sure error is raised for invalid instructions and FENCE, etc. 
+        7'b0001111: begin // FENCE AND PAUSE
+            err[1] = 1'b0; //Not implemented
+        end
+        7'b1110011: begin // ECALL and EBREAK
+            err[1] = 1'b0; //Not implemented
+        end
+
+        default: ; // Do nothing, either a memory instruction or an invalid instruction
         endcase
     end
 
-
-
+    
 endmodule

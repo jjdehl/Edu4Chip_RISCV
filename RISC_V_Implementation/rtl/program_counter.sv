@@ -27,6 +27,7 @@ module program_counter(
     input logic jump,
     input logic not_relative_pc,
     input logic [PROGRAM_COUNTER_WIDTH-1:0] jump_address,
+    input logic stall,
 
     output logic [PROGRAM_COUNTER_WIDTH-1:0] output_pc
     );
@@ -38,14 +39,14 @@ module program_counter(
     assign output_pc = next_pc;
 
     always_comb begin : Next_PC_Logic
-        sig1 = jump ? jump_address : 4;
+        sig1 = jump ? jump_address : (stall ? 0 : 4);
         sig2 = not_relative_pc ? 0 : pc;
         next_pc = sig1 + sig2;
     end
 
     always_ff @(posedge clk) begin
         if (rst) begin
-            pc <= {PROGRAM_COUNTER_WIDTH{1'b0}};
+            pc <= 32'h00000070;//{PROGRAM_COUNTER_WIDTH{1'b0}};
         end else begin
             pc <= next_pc;
         end

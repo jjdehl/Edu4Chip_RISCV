@@ -29,11 +29,17 @@ module riscv_top_tb(
   logic [31:0] read2;
   logic [31:0] counter;
   logic [31:0] alu_result;
-  logic mem_enable;
+  logic mem_enable_alu;
+  logic mem_enable_dmem;
   logic [4:0] write_address;
   logic [4:0] read1_address;
   logic [31:0] jump_debug;
   logic je_debug;
+  logic [1:0] csr_debug;
+  logic [31:0] dmem_data_out;
+  logic hz;
+  logic hz_is_branch;
+  logic [31:0] f_addr;
 
   riscv_top dut (
       .clk(clk),
@@ -44,11 +50,17 @@ module riscv_top_tb(
       .read1_out(read1),
       .read2_out(read2),
       .cur_result(alu_result),
-      .mem_enable_alu_out(mem_enable),
+      .mem_enable_alu_out(mem_enable_alu),
       .write_address(write_address),
       .read1_address(read1_address),
       .jump_debug(jump_debug),
-      .je_debug(je_debug)
+      .je_debug(je_debug),
+      .csr_debug(csr_debug),
+      .dmem_data_out(dmem_data_out),
+      .mem_enable_dmem_out(mem_enable_dmem),
+      .hz_out(hz),
+      .hz_is_branch(hz_is_branch),
+      .f_addr_o(f_addr)
 
   );
   // clock

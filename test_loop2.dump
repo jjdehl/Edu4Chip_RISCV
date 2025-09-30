@@ -1,0 +1,68 @@
+
+test_loop.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <gcd>:
+   0:	fe010113          	addi	sp,sp,-32
+   4:	00112e23          	sw	ra,28(sp)
+   8:	00812c23          	sw	s0,24(sp)
+   c:	02010413          	addi	s0,sp,32
+  10:	fea42623          	sw	a0,-20(s0)
+  14:	feb42423          	sw	a1,-24(s0)
+  18:	0340006f          	jal	zero,4c <gcd+0x4c>
+  1c:	fec42703          	lw	a4,-20(s0)
+  20:	fe842783          	lw	a5,-24(s0)
+  24:	00e7dc63          	bge	a5,a4,3c <gcd+0x3c>
+  28:	fec42703          	lw	a4,-20(s0)
+  2c:	fe842783          	lw	a5,-24(s0)
+  30:	40f707b3          	sub	a5,a4,a5
+  34:	fef42623          	sw	a5,-20(s0)
+  38:	0140006f          	jal	zero,4c <gcd+0x4c>
+  3c:	fe842703          	lw	a4,-24(s0)
+  40:	fec42783          	lw	a5,-20(s0)
+  44:	40f707b3          	sub	a5,a4,a5
+  48:	fef42423          	sw	a5,-24(s0)
+  4c:	fec42703          	lw	a4,-20(s0)
+  50:	fe842783          	lw	a5,-24(s0)
+  54:	fcf714e3          	bne	a4,a5,1c <gcd+0x1c>
+  58:	fec42783          	lw	a5,-20(s0)
+  5c:	00078513          	addi	a0,a5,0
+  60:	01c12083          	lw	ra,28(sp)
+  64:	01812403          	lw	s0,24(sp)
+  68:	02010113          	addi	sp,sp,32
+  6c:	00008067          	jalr	zero,0(ra)
+
+00000070 <main>:
+  70:	fe010113          	addi	sp,sp,-32
+  74:	00112e23          	sw	ra,28(sp)
+  78:	00812c23          	sw	s0,24(sp)
+  7c:	02010413          	addi	s0,sp,32
+  80:	1e600793          	addi	a5,zero,486
+  84:	fef42623          	sw	a5,-20(s0)
+  88:	7bc00793          	addi	a5,zero,1980
+  8c:	fef42423          	sw	a5,-24(s0)
+  90:	fec42783          	lw	a5,-20(s0)
+  94:	0007d863          	bge	a5,zero,a4 <main+0x34>
+  98:	fec42783          	lw	a5,-20(s0)
+  9c:	40f007b3          	sub	a5,zero,a5
+  a0:	fef42623          	sw	a5,-20(s0)
+  a4:	fe842783          	lw	a5,-24(s0)
+  a8:	0007d863          	bge	a5,zero,b8 <main+0x48>
+  ac:	fe842783          	lw	a5,-24(s0)
+  b0:	40f007b3          	sub	a5,zero,a5
+  b4:	fef42423          	sw	a5,-24(s0)
+  b8:	fe842583          	lw	a1,-24(s0)
+  bc:	fec42503          	lw	a0,-20(s0)
+  c0:	f41ff0ef          	jal	ra,0 <gcd>
+  c4:	fea42223          	sw	a0,-28(s0)
+  c8:	fe442783          	lw	a5,-28(s0)
+  cc:	00178793          	addi	a5,a5,1
+  d0:	fef42223          	sw	a5,-28(s0)
+  d4:	00000793          	addi	a5,zero,0
+  d8:	00078513          	addi	a0,a5,0
+  dc:	01c12083          	lw	ra,28(sp)
+  e0:	01812403          	lw	s0,24(sp)
+  e4:	02010113          	addi	sp,sp,32
+  e8:	00008067          	jalr	zero,0(ra)
