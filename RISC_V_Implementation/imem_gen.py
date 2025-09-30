@@ -1,4 +1,4 @@
-# Python script to generate a SystemVerilog instruction memory file (imem32.sv)
+# Python script to generate a SystemVerilog instruction memory file (imem32.sv) % Written by ChatGPT, doesnt work properly but instructions can be copied from result. Did not want to spend time on fix.
 # It reads RISC-V instructions from a .dump file and generates the memory file.
 
 import re
