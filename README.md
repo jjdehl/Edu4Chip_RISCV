@@ -1,4 +1,6 @@
 # Edu4Chip_RISCV
+The project aims to simulate a pipelined RISC-V CPU.
+
 
 ## Prelim plan:
 - Research the topic and the design requirements
@@ -9,14 +11,12 @@
 - FPGA?
 
 
-Instruction set:
+Instruction set with slighlty expanded explanation compared to official documentation:
 https://msyksphinz-self.github.io/riscv-isadoc/
-
-Example progression
-https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/FROM_BLINKER_TO_RISCV/README.md
 
 
 ## Notes on instruction set:
+
 - [6:0] is the opcode
 - [11:7] is the result register
 - [19:15] is rs1
@@ -30,7 +30,5 @@ Initially, the following instructions are implemented:
 lui
 addi
 add
-
-And no data memory is included.
 
 The instruction memory is initially static and hardcoded.
