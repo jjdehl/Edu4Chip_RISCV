@@ -150,7 +150,7 @@ module imem32(
         // instr_reg[57] = 32'h02010113;
         // instr_reg[58] = 32'h00008067;
 
-// GCD of 2520 and 1980 main at 0x70 (result in 180 or 0xb4 +1 ) Appears to be broken.,...
+        // GCD of 2520 and 1980 main at 0x70 (result in 180 or 0xb4 +1 ) Appears to be broken from compiler - assembly instructions looks odd
         // instr_reg[0] = 32'hfe010113;
         // instr_reg[1] = 32'h00112e23;
         // instr_reg[2] = 32'h00812c23;
@@ -213,7 +213,7 @@ module imem32(
         // instr_reg[59] = 32'h00008067;
         // instr_reg[60] = 32'h00000013; // NOP
 
-// GCD of 1980 and 486 - should be 18 +1 or 0x12 + 1
+// GCD of 1980 and 486 - should be 18 +1 or 0x12 + 1. Main at 0x00000070
         instr_reg[0] = 32'hfe010113;
         instr_reg[1] = 32'h00112e23;
         instr_reg[2] = 32'h00812c23;
@@ -277,4 +277,5 @@ module imem32(
 
     end
 endmodule
+
 
